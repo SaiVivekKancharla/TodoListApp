@@ -1,0 +1,308 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{React Native TodoList App}
+\author{Deepak Naga Sai Vivek Kancharla}
+\date{November 17th 2024}
+\maketitle
+
+\section*{1. Screenshots of Your App}
+\subsection*{Emulator Screenshot}
+Take a screenshot of your app running on an emulator (e.g., Android Studio Emulator or iOS Simulator).
+
+\includegraphics[width=\textwidth]{Image1.jpeg}
+
+
+\subsection*{Physical Device Screenshot}
+\includegraphics[width=\textwidth]{Image06.png}
+\subsection*{Differences Observed}
+\begin{itemize}
+    \item \textbf{Performance:} The app typically runs faster on physical devices due to direct hardware usage, while emulators may experience lag.
+    \item \textbf{Device-Specific Features:} Physical devices allow testing real-world features like camera, GPS, or touch gestures, which might not behave the same in an emulator.
+    \item \textbf{Screen Resolution:} Physical devices display apps at native resolution, which may differ from emulator settings.
+\end{itemize}
+
+\section*{2. Setting Up an Emulator}
+\subsection*{Steps Followed}
+\textbf{For iOS:}
+\begin{enumerate}
+    \item Install Xcode from the App Store.
+    \item Open Xcode > Preferences > Platforms and download the necessary simulators.
+    \item Launch the iOS Simulator from Xcode or the terminal with:
+    \begin{verbatim}
+    xcrun simctl list
+    xcrun simctl boot <device-id>
+    \end{verbatim}
+\end{enumerate}
+
+\subsection*{Challenges and Solutions}
+\begin{itemize}
+    \item \textbf{Challenge:} Emulator stuck at boot screen.\\
+    \textbf{Solution:} Increase RAM allocation in the emulator settings or use a different system image.
+    \item \textbf{Challenge:} Slow emulator performance.\\
+    \textbf{Solution:} Enable hardware acceleration (HAXM for Intel processors or Hypervisor Framework for macOS).
+\end{itemize}
+
+\section*{3. Running the App on a Physical Device Using Expo}
+\subsection*{Steps Followed}
+\begin{enumerate}
+    \item Install the Expo CLI:
+    \begin{verbatim}
+    npm install -g expo-cli
+    \end{verbatim}
+    \includegraphics[width=\textwidth]{image04.png}
+    \item Create a project:
+    \begin{verbatim}
+    npx expo init YourProjectName
+    \end{verbatim}
+    \item Start the Expo development server:
+    \begin{verbatim}
+    npx expo start
+    
+    \end{verbatim}
+    \includegraphics[width=\textwidth]{Screenshot 1.png}
+    \item Install the Expo Go app on your device (from App Store or Google Play).
+    \item Scan the QR code displayed in the Expo CLI using the Expo Go app.
+    \item Your app runs on the device immediately after scanning.
+\end{enumerate}
+
+ 
+\subsection*{Troubleshooting Steps}
+\begin{itemize}
+    \item \textbf{Issue:} QR code not working.\\
+    \textbf{Solution:} Ensure both the device and computer are on the same Wi-Fi network.
+    \item \textbf{Issue:} App crashes on the device.\\
+    \textbf{Solution:} Check for incompatible dependencies and reinstall node modules.
+\end{itemize}
+
+\section*{4. Comparison of Emulator vs. Physical Device}
+\subsection*{Emulator}
+\textbf{Advantages:}
+\begin{itemize}
+    \item Easy to set up and use.
+    \item Debugging tools are integrated (e.g., logcat in Android Studio).
+    \item No need for physical hardware.
+\end{itemize}
+
+\textbf{Disadvantages:}
+\begin{itemize}
+    \item Slower performance, especially with animations or heavy computations.
+    \item Limited support for device-specific features like Bluetooth or real-world GPS.
+\end{itemize}
+
+\subsection*{Physical Device}
+\textbf{Advantages:}
+\begin{itemize}
+    \item Real-world performance and feature testing.
+    \item Faster and smoother UI/UX experience.
+    \item Accurate testing of hardware features (e.g., camera, accelerometer).
+\end{itemize}
+
+\textbf{Disadvantages:}
+\begin{itemize}
+    \item Requires USB debugging or Expo setup.
+    \item Dependency on device model for testing compatibility.
+\end{itemize}
+
+\section*{5. Troubleshooting a Common Error}
+\subsection*{Error Encountered}
+\textbf{Issue:} \texttt{EADDRINUSE: address already in use :::8081}.
+
+\subsection*{Cause}
+The default Metro bundler port \texttt{8081} was already being used by another process.
+
+\subsection*{Steps Taken to Resolve}
+\begin{enumerate}
+    \item Identify the process using the port:
+    \begin{verbatim}
+    lsof -i :8081
+    \end{verbatim}
+    \item Kill the conflicting process:
+    \begin{verbatim}
+    kill -9 <PID>
+    \end{verbatim}
+    \item Alternatively, use a different port for Metro:
+    \begin{verbatim}
+    npx react-native start --port=8088
+    \end{verbatim}
+\end{enumerate}
+
+
+
+
+\title{Task 2 Submission: Building a Simple To-Do List App}
+\author{}
+\date{}
+\maketitle
+
+
+\section{Mark Tasks as Complete}
+
+\subsection{Implementation Details}
+
+\textbf{Toggle Functionality}:
+\begin{itemize}
+    \item Added a \texttt{toggleComplete} function that updates the completion status of tasks in the state.
+    \item Tasks have a \texttt{completed} property in their state object, initialized as \texttt{false}.
+    \item When a task is toggled, the state is updated using the \texttt{setTasks} function.
+\end{itemize}
+
+\textbf{Styling Completed Tasks}:
+\begin{itemize}
+    \item Used conditional styling to apply a strikethrough text style or change the text color for completed tasks.
+    \item Example:
+    \begin{verbatim}
+const taskStyle = {
+  textDecorationLine: task.completed ? 'line-through' : 'none',
+  color: task.completed ? 'gray' : 'black'
+};
+    \end{verbatim}
+\end{itemize}
+
+\subsection{State Update Code}
+\begin{verbatim}
+const toggleComplete = (id) => {
+  setTasks(tasks.map(task =>
+    task.id === id ? { ...task, completed: !task.completed } : task
+  ));
+};
+\end{verbatim}
+
+
+
+\section{Persist Data Using AsyncStorage }
+
+\subsection{Implementation Details}
+
+\textbf{Saving Data}:
+\begin{itemize}
+    \item Used \texttt{AsyncStorage} to store the tasks list when the state changes.
+    \item Added a \texttt{useEffect} to save data on every update.
+\end{itemize}
+
+\textbf{Retrieving Data}:
+\begin{itemize}
+    \item On app launch, retrieved the stored tasks from \texttt{AsyncStorage} and initialized the state.
+\end{itemize}
+
+
+\begin{verbatim}
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+useEffect(() => {
+  const loadTasks = async () => {
+    const storedTasks = await AsyncStorage.getItem('tasks');
+    if (storedTasks) setTasks(JSON.parse(storedTasks));
+  };
+  loadTasks();
+}, []);
+
+useEffect(() => {
+  AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+}, [tasks]);
+\end{verbatim}
+
+\includegraphics[width=\textwidth]{Image2.jpeg}
+\section{Edit Tasks }
+
+\subsection{Implementation Details}
+
+\textbf{Editing Functionality}:
+\begin{itemize}
+    \item Added functionality to tap a task to enter edit mode.
+    \item In edit mode, the task’s text is replaced with an editable \texttt{TextInput} component.
+\end{itemize}
+
+\textbf{Updating State}:
+\begin{itemize}
+    \item Implemented an \texttt{updateTask} function to modify the content of a task in the state array.
+    \item Used a temporary state variable to track the current editing task.
+\end{itemize}
+
+
+\begin{verbatim}
+const [editingTask, setEditingTask] = useState(null);
+const [newText, setNewText] = useState('');
+
+const updateTask = (id) => {
+  setTasks(tasks.map(task =>
+    task.id === id ? { ...task, text: newText } : task
+  ));
+  setEditingTask(null);
+};
+\end{verbatim}
+
+\subsection{UI Management}
+\begin{itemize}
+    \item Rendered a \texttt{TextInput} when \texttt{editingTask} equals the task ID.
+    \item Rendered regular text otherwise.
+\end{itemize}
+
+
+\section{Add Animations }
+
+\subsection{Implementation Details}
+
+\textbf{Adding Animations}:
+\begin{itemize}
+    \item Used the React Native \texttt{Animated} API to enhance user experience.
+    \item Added animations for task addition and deletion using \texttt{Animated.Value}.
+\end{itemize}
+
+\textbf{Task Addition}:
+\begin{itemize}
+    \item Applied a fade-in effect using \texttt{Animated.timing}.
+    \item Code:
+    \begin{verbatim}
+const fadeIn = new Animated.Value(0);
+
+const animateTask = () => {
+  Animated.timing(fadeIn, {
+    toValue: 1,
+    duration: 500,
+    useNativeDriver: true
+  }).start();
+};
+    \end{verbatim}
+\end{itemize}
+
+\textbf{Task Deletion}:
+\begin{itemize}
+    \item Implemented a slide-out effect before removing the task from the state.
+\end{itemize}
+\includegraphics[width=\textwidth]{Image3.jpeg}
+
+
+
+\subsection{Description}
+\begin{itemize}
+    \item \textbf{Fade-in Animation}: Tasks gradually appear when added.
+    \item \textbf{Slide-out Animation}: Tasks slide out to the left when deleted.
+    \item These animations make the app feel more dynamic and engaging.
+\end{itemize}
+
+\section{Conclusion}
+The React Native To-Do List app was extended with the following features:
+\begin{enumerate}
+    \item \textbf{Mark Tasks as Complete}: Users can toggle the completion status of tasks with updated styles.
+    \item \textbf{Persist Data Using AsyncStorage}: Task data is stored and retrieved seamlessly, ensuring persistence.
+    \item \textbf{Edit Tasks}: Tasks can be edited directly within the app, enhancing flexibility.
+    \item \textbf{Add Animations}: Visual effects make the app more engaging and professional.
+\end{enumerate}
+
+These enhancements greatly improved the app's usability and user experience.
+
+
+\subsection*{ GitHub Repository}
+\begin{itemize}
+    \item https://github.com/SaiVivekKancharla/TodoListApp
+\end{itemize}
+
+\end{document}
+
+
+
